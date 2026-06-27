@@ -1,4 +1,4 @@
-# ESP01 TCP Driver for LPC2129
+# ESP01 Driver for LPC2129
 
 A bare-metal C driver to connect an LPC2129 microcontroller to a TCP server over Wi-Fi using the ESP-01 (ESP8266) module.
 
