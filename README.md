@@ -87,6 +87,16 @@ const char lut[8][5] = {
 ```
 
 ---
+### Receiving Messages
+Incoming server messages are received as `+IPD` packets from the ESP-01. The driver detects this in `esp_notification()` and prints everything after the `:` directly on UART0, stripping the `+IPD,<length>:` header automatically.
+
+### Auto Reconnect
+The main loop continuously calls `esp_notification()` to monitor the connection. If a drop is detected:
+
+- **Wi-Fi disconnected** — calls `esp_init(is_wifi_connected)` to check and reconnect to Wi-Fi, then reconnects to the server.
+- **TCP connection closed** — waits 60 seconds (to let the server reset) then calls `esp_init(connect_wifi)` to reconnect from the Wi-Fi step onward.
+
+---
 
 ## Usage
 
@@ -94,6 +104,7 @@ const char lut[8][5] = {
 2. Enter your Wi-Fi name, password, server IP, and port when prompted.
 3. The module will connect automatically and print status over UART0.
 4. Type `SEND` in the terminal to send a message to the server.
+5. Any message received from the server is printed directly on UART0
 
 ```
 Enter wifi name:     MyNetwork
@@ -105,7 +116,10 @@ ESP01 Initialized
 > SEND
 enter the string
 > Hello Server
-uart string send
+uart string 
+
+message received
+Hello back from server
 ```
 
 ---
